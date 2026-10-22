@@ -1,0 +1,26 @@
+path: .
+train: images/train
+val: images/valid
+test: images/test
+nc: 20
+names:
+- Danger Ahead
+- Give Way
+- Left Sharp Curve
+- No Entry
+- No Over Taking
+- No Over Taking Trucks
+- Right Sharp Curve
+- Speed Limit 100
+- Speed Limit 110
+- Speed Limit 120
+- Speed Limit 20
+- Speed Limit 30
+- Speed Limit 40
+- Speed Limit 50
+- Speed Limit 60
+- Speed Limit 70
+- Speed Limit 80
+- Speed Limit 90
+- Stop
+- Turn Right
