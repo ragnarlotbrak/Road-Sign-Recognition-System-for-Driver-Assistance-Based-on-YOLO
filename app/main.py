@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 import shutil
 import os
-from app.cv_pipeline import process_video_dummy
+from app.cv_pipeline import process_video_real
 
 app = FastAPI(title="Road Sign Recognition API")
 
@@ -12,17 +12,17 @@ os.makedirs("results", exist_ok=True)
 
 @app.post("/detect/")
 async def detect_signs(file: UploadFile = File(...)):
-    # 1. Saving the uploaded video file to the server
+    # Saving the uploaded video file to the server
     input_path = f"uploads/{file.filename}"
     with open(input_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     
     output_path = f"results/processed_{file.filename}"
     
-    # 2. Calling the video processing function (placeholder without actual neural network)
-    stats = process_video_dummy(input_path, output_path)
+    # Calling the video processing function
+    stats = process_video_real(input_path, output_path)
     
-    # 3. Returning JSON with results
+    # Returning JSON with results
     return JSONResponse(content={
         "status": "success",
         "message": "Video processed successfully.",

@@ -1,15 +1,15 @@
 import cv2
+from ultralytics import YOLO
 
-def process_video_dummy(input_path: str, output_path: str):
-    # Открываем видеофайл
+model = YOLO("yolov8n.pt")
+
+def process_video_real(input_path: str, output_path: str):
     cap = cv2.VideoCapture(input_path)
     
-    # get video properties
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = cap.get(cv2.CAP_PROP_FPS)
     
-    # Настраиваем инструмент для сохранения видео
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
     
@@ -18,26 +18,18 @@ def process_video_dummy(input_path: str, output_path: str):
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
-            break # Видео закончилось
+            break
             
-        # --- for further yolo ml ---
-        # temp
-        start_point = (100, 100) 
-        end_point = (300, 300)
-        color = (0, 255, 0)
-        thickness = 2
-        cv2.rectangle(frame, start_point, end_point, color, thickness)
+        # give the frame to the model for prediction
+        results = model.predict(source=frame, conf=0.5, verbose=False)
         
-        # text
-        cv2.putText(frame, "Speed Limit 60", (100, 90), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
-        # ------------------------------------
+        annotated_frame = results[0].plot()
         
-        # saving the processed frame to the output video
-        out.write(frame)
+        # save frame to output video
+        out.write(annotated_frame)
         frames_processed += 1
         
     cap.release()
     out.release()
     
-    return {"frames_processed": frames_processed, "mock_detections": True}
+    return {"frames_processed": frames_processed, "model_used": "YOLO"}
