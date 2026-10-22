@@ -1,10 +1,15 @@
-venv/ __pycache__/ .env uploads/ results/ .DS_Store
+venv/
+__pycache__/
+uploads/
+results/
+models/*.pt
+.env
+.DS_Store
+
 # datasets live on Drive, not in Git
 data/road_signs_yolo/
 data/road_signs_yolo_aug/
 data/*.zip
-
-
 
 # IDE
 .idea/
